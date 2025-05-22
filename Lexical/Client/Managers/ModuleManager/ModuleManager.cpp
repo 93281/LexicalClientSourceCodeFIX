@@ -59,6 +59,7 @@ void ModuleManager::init() {
 	moduleList.push_back(new Disabler());
 	moduleList.push_back(new NoPacket());
 	moduleList.push_back(new Timer());
+	moduleList.push_back(new PopCounter());
 	moduleList.push_back(new Spammer());
 
 	//CLIENT

@@ -10,7 +10,6 @@
 #include "Modules/Category/Combat/Surround.h"
 #include "Modules/Category/Combat/KillAura.h"
 
-
 //MOVEMENT
 #include "Modules/Category/Movement/AirJump.h"
 #include "Modules/Category/Movement/AutoSprint.h"
@@ -57,7 +56,7 @@
 //MISC
 #include "Modules/Category/Misc/Spammer.h"
 #include "Modules/Category/Misc/Disabler.h"
-
+#include "Modules/Category/Misc/PopCounter.h"
 #include "Modules/Category/Misc/NoPacket.h"
 #include "Modules/Category/Misc/Timer.h"
 

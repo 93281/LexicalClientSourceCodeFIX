@@ -303,6 +303,9 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\ColorsMod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libs\libhat\libhat.lib" />
@@ -2113,6 +2116,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\ColorsMod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
