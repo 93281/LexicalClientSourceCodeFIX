@@ -216,10 +216,10 @@ void ClickGUI::Render() {
 				isRightClickDown = false;
 			}
 		}
-
+		int indexForMainColor = 0;
 		updateSelectedAnimRect(hRectPos, window->selectedAnim);
 
-		D2D::fillRectangle(hRectPos, colorMod->getColor(1 * colorMod->getSeperationValue()));
+		D2D::fillRectangle(hRectPos, colorMod->getColor(indexForMainColor * colorMod->getSeperationValue()));
 		D2D::drawText(hTextPos, window->name, UIColor(255, 255, 255), textSize);
 
 		D2D::fillRectangle(hRectPos, UIColor(255, 255, 255, (int)(25 * window->selectedAnim)));
@@ -265,11 +265,12 @@ void ClickGUI::Render() {
 				D2D::addBlur(wbgRectPos, 8.f);
 			}
 			float yOffset = hRectPos.w + moduleSpace;
-			int indexForMainColor = 0;
 			if (indexForMainColor > 99999) { indexForMainColor = 0; }
 			for (auto& mod : window->moduleList) {
 				UIColor mainColor = colorMod->getColor(indexForMainColor * colorMod->getSeperationValue());
-				indexForMainColor++;
+				if (mod->isEnabled()) {
+					indexForMainColor++;
+				}
 				float modPaddingX = wbgPaddingX + (2.f * textSize * fontPercent);
 				Vec4<float> mRectPos = Vec4<float>(hRectPos.x + modPaddingX,
 					yOffset,
