@@ -2121,6 +2121,9 @@
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\ModuleBase\Settings\PageSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libs\libhat\libhat\Scanner.inl">

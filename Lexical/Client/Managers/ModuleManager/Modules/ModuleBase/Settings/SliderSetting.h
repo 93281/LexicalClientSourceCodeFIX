@@ -19,14 +19,16 @@ public:
 	T* valuePtr;
 	T minValue;
 	T maxValue;
+	
 
-	SliderSetting(std::string settingName, std::string des, T* vPtr, T defaultValue, T vMin, T vMax) {
+	SliderSetting(std::string settingName, std::string des, T* vPtr, T defaultValue, T vMin, T vMax, int page = 0) {
 		this->name = settingName;
 		this->description = des;
 		this->valuePtr = vPtr;
 		*this->valuePtr = defaultValue;
 		this->minValue = vMin;
 		this->maxValue = vMax;
+		this->settingPage = page;
 
 		this->type = SettingType::SLIDER_S;
 

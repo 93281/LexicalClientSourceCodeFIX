@@ -1,7 +1,9 @@
 #include "Module.h"
 #include "../../../../../Libs/json.hpp"
+#include "../../Client/Client.h"
 
 #include "../../../NotificationManager/NotificationManager.h"
+#include "../../../../../Utils/FileUtil.h"
 
 using json = nlohmann::json;
 
@@ -55,7 +57,6 @@ bool Module::runOnBackground() {
 void Module::setEnabled(bool enable) {
 	if (this->enabled != enable) {
 		this->enabled = enable;
-
 		if (enable) {
 			this->onEnable();
 		}
@@ -70,9 +71,15 @@ void Module::toggle() {
 }
 
 void Module::onDisable() {
+	/*if (ModuleManager::getModule<ToggleSounds>()->isEnabled()) {
+		FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_off.wav");
+	}*/
 }
 
 void Module::onEnable() {
+	/*if (ModuleManager::getModule<ToggleSounds>()->isEnabled()) {
+		FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_on.wav");
+	}*/
 }
 
 void Module::onKeyUpdate(int key, bool isDown) {
@@ -154,6 +161,11 @@ void Module::onLoadConfig(void* confVoid) {
 					(*colorSetting->colorPtr) = ColorUtil::HexStringToColor(confValue.get<std::string>());
 					break;
 				}
+				case SettingType::PAGE_S: {
+					PageSetting* pageSetting = static_cast<PageSetting*>(setting);
+					*pageSetting->valuePtr = obj[pageSetting->name].get<int>();
+					break;
+				}
 				case SettingType::SLIDER_S: {
 					SliderSettingBase* sliderSettingBase = static_cast<SliderSettingBase*>(setting);
 					if (sliderSettingBase->valueType == ValueType::INT_T) {
@@ -201,6 +213,11 @@ void Module::onSaveConfig(void* confVoid) {
 		case SettingType::COLOR_S: {
 			ColorSetting* colorSetting = static_cast<ColorSetting*>(setting);
 			obj[settingName] = ColorUtil::ColorToHexString((*colorSetting->colorPtr));
+			break;
+		}
+		case SettingType::PAGE_S: {
+			PageSetting* pageSetting = static_cast<PageSetting*>(setting);
+			obj[settingName] = (*pageSetting->valuePtr);
 			break;
 		}
 		case SettingType::SLIDER_S: {

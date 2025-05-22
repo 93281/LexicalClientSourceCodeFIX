@@ -7,12 +7,13 @@ public:
 	std::vector<std::string> enumList;
 	int* value;
 
-	EnumSetting(std::string settingName, std::string des, std::vector<std::string> cEnumList, int* ptr, int defaultValue) {
+	EnumSetting(std::string settingName, std::string des, std::vector<std::string> cEnumList, int* ptr, int defaultValue, int page = 0) {
 		this->name = settingName;
 		this->description = des;
 		this->enumList = cEnumList;
 		this->value = ptr;
 		*this->value = defaultValue;
 		this->type = SettingType::ENUM_S;
+		this->settingPage = page;
 	}
 };

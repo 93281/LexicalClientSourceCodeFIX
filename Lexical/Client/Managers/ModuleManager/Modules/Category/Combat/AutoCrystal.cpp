@@ -1,33 +1,42 @@
 #include "AutoCrystal.h"
 #include "../../../../../../Utils/Minecraft/Intenvoru.h"
 /* quick fix prob bad */
+int selectedPagsse = 0;
 AutoCrystal::AutoCrystal() : Module("AutoCrystal", "Automatically breaks and places Crystal", Category::COMBAT) {
-	registerSetting(new BoolSetting("Place", "Place End Crystals at Target", &place, true));
-	registerSetting(new BoolSetting("Break", "Explode End Crystals at Target", &explode, true));
-	registerSetting(new BoolSetting("MultiTask", "Multitasks like eating and crystalling", &multiTask, true));
-	registerSetting(new BoolSetting("Safety", "Prioritizes safety over damage", &safety, true));
-	registerSetting(new BoolSetting("Java", "For java servers", &java, false));
-	registerSetting(new SliderSetting<int>("PlaceDist", "Range for placing crystals", &placeRange, 5, 1, 12));
-	registerSetting(new SliderSetting<int>("BreakDist", "Range for breaking crystals", &breakRange, 5, 1, 12));
-	registerSetting(new SliderSetting<int>("TargetDist", "Range for targeting entities", &targetRange, 10, 1, 20));
-	registerSetting(new SliderSetting<float>("Proximity", "Proximity for crystal placement", &proximity, 6.f, 1.f, 12.f));
-	registerSetting(new SliderSetting<float>("EnemyDmg", "Minimum damage to enemy", &enemyDamage, 8.f, 0.f, 36.f));
-	registerSetting(new SliderSetting<float>("SelfDmg", "Maximum damage to self", &localDamage, 4.f, 0.f, 36.f));
-	registerSetting(new SliderSetting<int>("WasteAmount", "Number of crystals to place", &wasteAmount, 3, 1, 10));
-	registerSetting(new BoolSetting("Rotate", "Rotate to placement locations", &rotate, true));
-	registerSetting(new SliderSetting<int>("PlaceSpeed", "Speed of placing crystals", &placeSpeed, 10, 0, 20));
-	registerSetting(new SliderSetting<int>("BreakSpeed", "Speed of breaking crystals", &breakSpeed, 10, 0, 20));
-	registerSetting(new SliderSetting<int>("BoostSpeed", "Speed of ID prediction", &predictSpeed, 10, 0, 20));
-	registerSetting(new BoolSetting("Boost", "Predict crystal runtime ID for faster actions", &predict, false));
-	registerSetting(new SliderSetting<int>("Packets", "Number of packets for prediction", &predictPacket, 5, 1, 10));
-	registerSetting(new SliderSetting<float>("BoostDamage", "Minimum damage for boosting", &boostDmg, 10.f, 0.f, 20.f));
-	registerSetting(new BoolSetting("Swap", "Swap to end crystal", &swap, true));
-	registerSetting(new BoolSetting("SwitchBack", "Switch back to previous slot", &switchBack, true));
-	registerSetting(new EnumSetting("Render", "Rendering mode for placements", { "Off", "Box", "Flat" }, &renderType, 0));
-	registerSetting(new ColorSetting("Color", "Render color", &renderColor, { 255, 0, 0 }));
-	registerSetting(new BoolSetting("RenderDamage", "Display damage dealt during render", &dmgText, true));
-	registerSetting(new BoolSetting("SelfTest", "Enable testing on yourself", &selfTest, false));
+	registerSetting(new PageSetting("Page", "Module Page", { "General", "Range", "Speed", "Inventory", "Render", "Misc" }, & selectedPagsse));
+	this->modulePagePtr = &selectedPagsse;
+	registerSetting(new BoolSetting("Place", "Place End Crystals at Target", &place, true, 0));
+	registerSetting(new BoolSetting("Break", "Explode End Crystals at Target", &explode, true, 0));
+	registerSetting(new BoolSetting("MultiTask", "Multitasks like eating and crystalling", &multiTask, true, 0));
+	registerSetting(new BoolSetting("Safety", "Prioritizes safety over damage", &safety, true, 0));
+	registerSetting(new BoolSetting("Java", "For java servers", &java, false, 0));
+
+	registerSetting(new SliderSetting<int>("PlaceDist", "Range for placing crystals", &placeRange, 5, 1, 12, 1));
+	registerSetting(new SliderSetting<int>("BreakDist", "Range for breaking crystals", &breakRange, 5, 1, 12, 1));
+	registerSetting(new SliderSetting<int>("TargetDist", "Range for targeting entities", &targetRange, 10, 1, 20, 1));
+	registerSetting(new SliderSetting<float>("Proximity", "Proximity for crystal placement", &proximity, 6.f, 1.f, 12.f, 1));
+	registerSetting(new SliderSetting<float>("EnemyDmg", "Minimum damage to enemy", &enemyDamage, 8.f, 0.f, 36.f, 1));
+	registerSetting(new SliderSetting<float>("SelfDmg", "Maximum damage to self", &localDamage, 4.f, 0.f, 36.f, 1));
+
+	registerSetting(new SliderSetting<int>("PlaceSpeed", "Speed of placing crystals", &placeSpeed, 10, 0, 20, 2));
+	registerSetting(new SliderSetting<int>("BreakSpeed", "Speed of breaking crystals", &breakSpeed, 10, 0, 20, 2));
+	registerSetting(new SliderSetting<int>("BoostSpeed", "Speed of ID prediction", &predictSpeed, 10, 0, 20, 2));
+	registerSetting(new BoolSetting("Boost", "Predict crystal runtime ID for faster actions", &predict, false, 2));
+	registerSetting(new SliderSetting<int>("Packets", "Number of packets for prediction", &predictPacket, 5, 1, 10, 2));
+	registerSetting(new SliderSetting<float>("BoostDamage", "Minimum damage for boosting", &boostDmg, 10.f, 0.f, 20.f, 2));
+
+	registerSetting(new SliderSetting<int>("WasteAmount", "Number of crystals to place", &wasteAmount, 3, 1, 10, 3));
+	registerSetting(new BoolSetting("Rotate", "Rotate to placement locations", &rotate, true, 3));
+	registerSetting(new BoolSetting("Swap", "Swap to end crystal", &swap, true, 3));
+	registerSetting(new BoolSetting("SwitchBack", "Switch back to previous slot", &switchBack, true, 3));
+
+	registerSetting(new EnumSetting("Render", "Rendering mode for placements", { "Off", "Box", "Flat" }, &renderType, 0, 4));
+	registerSetting(new ColorSetting("Color", "Render color", &renderColor, { 255, 0, 0 }, 4));
+	registerSetting(new BoolSetting("RenderDamage", "Display damage dealt during render", &dmgText, true, 4));
+
+	registerSetting(new BoolSetting("SelfTest", "Enable testing on yourself", &selfTest, false, 5));
 }
+
 
 bool AutoCrystal::sortCrystal(CrystalData c1, CrystalData c2) {
 	return c1.targetDamage > c2.targetDamage;

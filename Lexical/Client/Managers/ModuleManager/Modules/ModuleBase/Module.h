@@ -16,6 +16,7 @@
 #include "Settings/ColorSetting.h"
 #include "Settings/EnumSetting.h"
 #include "Settings/KeybindSetting.h"
+#include "Settings/PageSetting.h"
 #include "Settings/SliderSetting.h"
 
 enum class Category {
@@ -63,13 +64,15 @@ public:
 		return this->description;
 	}
 
-	inline Category getCategory() { 
+	inline Category getCategory() {
 		return this->category;
 	}
 
 	inline std::vector<Setting*>& getSettingList() {
 		return this->settings;
 	}
+	int* modulePagePtr = nullptr;
+	int modulePage = 0;
 public:
 	virtual std::string getModeText();
 	virtual bool isEnabled();
@@ -91,6 +94,7 @@ public:
 	virtual void onD2DRender();
 	virtual void onMCRender(MinecraftUIRenderContext* renderCtx);
 	virtual void onLevelRender();
+	//virtual void onMatrixRender(glm::mat4* matrix); later
 	virtual void onLoadConfig(void* conf);
 	virtual void onSaveConfig(void* conf);
 };

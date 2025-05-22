@@ -1,17 +1,22 @@
 #include "KillAura.h"
 #include "../../../../../../SDK/Network/Packet/PlayerActionPacket.h"
-
+int seleelc = 0;
 KillAura::KillAura() : Module("KillAura", "Attacks entities around you", Category::COMBAT) {
-	registerSetting(new SliderSetting<float>("Range", "Range in which targets will be hit", &range, 5.f, 3.f, 150.f));
-	registerSetting(new SliderSetting<float>("WallRange", "Range in which targets will be hit through walls", &wallRange, 0.f, 0.f, 150.f));
-	registerSetting(new SliderSetting<int>("Interval", "Attack delay", &interval, 1, 0, 20));
-	registerSetting(new SliderSetting<int>("Multiplier", "Number of attacks per tick", &multiplier, 1, 1, 5));
-	registerSetting(new EnumSetting("Rotations", "Rotates to the targets", { "None", "Normal", "Strafe", "Predict" }, &rotMode, 1));
-	registerSetting(new EnumSetting("HitType", "Hit mode", { "Single", "Multi" }, &hitType, 0));
-	registerSetting(new SliderSetting<int>("HitChance", "Chance to hit", &hitChance, 100, 0, 100));
-	registerSetting(new EnumSetting("Weapon", "Auto switch to best weapon", { "None", "Switch", "Spoof" }, &autoWeaponMode, 0));
-	registerSetting(new BoolSetting("Mobs", "Attack Mobs", &includeMobs, false));
+	registerSetting(new PageSetting("Page", "Module Page", { "Target", "Attack", "Weapon" }, &seleelc));
+	this->modulePagePtr = &seleelc;
+	registerSetting(new SliderSetting<float>("Range", "Range in which targets will be hit", &range, 5.f, 3.f, 150.f, 0));
+	registerSetting(new SliderSetting<float>("WallRange", "Range in which targets will be hit through walls", &wallRange, 0.f, 0.f, 150.f, 0));
+	registerSetting(new BoolSetting("Mobs", "Attack Mobs", &includeMobs, false, 0));
+
+	registerSetting(new SliderSetting<int>("Interval", "Attack delay", &interval, 1, 0, 20, 1));
+	registerSetting(new SliderSetting<int>("Multiplier", "Number of attacks per tick", &multiplier, 1, 1, 5, 1));
+	registerSetting(new EnumSetting("Rotations", "Rotates to the targets", { "None", "Normal", "Strafe", "Predict" }, &rotMode, 1, 1));
+	registerSetting(new EnumSetting("HitType", "Hit mode", { "Single", "Multi" }, &hitType, 0, 1));
+	registerSetting(new SliderSetting<int>("HitChance", "Chance to hit", &hitChance, 100, 0, 100, 1));
+
+	registerSetting(new EnumSetting("Weapon", "Auto switch to best weapon", { "None", "Switch", "Spoof" }, &autoWeaponMode, 0, 2));
 }
+
 
 std::string KillAura::getModeText() {
 	return hitType == 0 ? "Single" : "Multi";

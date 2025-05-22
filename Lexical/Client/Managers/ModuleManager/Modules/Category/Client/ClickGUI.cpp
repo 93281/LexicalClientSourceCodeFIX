@@ -236,20 +236,29 @@ void ClickGUI::Render() {
 				if (mod->extended) {
 					yHeight += settingSpace;
 					for (auto& setting : mod->getSettingList()) {
+						int currentPage = (mod->modulePagePtr != nullptr) ? *mod->modulePagePtr : -1;
+
+						if (setting->type != SettingType::PAGE_S &&
+							setting->name != "Visible" &&
+							setting->name != "Keybind" &&
+							setting->name != "Toggle" &&
+							(mod->modulePagePtr != nullptr && setting->settingPage != currentPage))
+							continue;
 						if (setting->type != SettingType::COLOR_S) {
 							yHeight += textHeight + (textPaddingY * 2.f);
 						}
 						else {
 							ColorSetting* colorSetting = static_cast<ColorSetting*>(setting);
 							yHeight += textHeight + (textPaddingY * 2.f);
+
 							if (colorSetting->extended) {
 								yHeight += settingSpace;
-								for (auto& slider : colorSetting->colorSliders) {
-									yHeight += textHeight + (textPaddingY * 2.f) + settingSpace;
-								}
-								yHeight -= settingSpace;
+
+								yHeight += 120.f;
+
 							}
 						}
+
 						yHeight += settingSpace;
 					}
 				}
@@ -321,7 +330,17 @@ void ClickGUI::Render() {
 						}
 
 						updateSelectedAnimRect(sRectPos, setting->selectedAnim);
+						int currentPage = -1;
+						if (mod->modulePagePtr != nullptr) {
+							currentPage = *mod->modulePagePtr;
+						}
 
+						if (setting->type != SettingType::PAGE_S &&
+							setting->name != "Visible" &&
+							setting->name != "Keybind" &&
+							setting->name != "Toggle" &&
+							(mod->modulePagePtr != nullptr && setting->settingPage != currentPage))
+							continue;
 						switch (setting->type) {
 						case SettingType::BOOL_S: {
 							BoolSetting* boolSetting = static_cast<BoolSetting*>(setting);
@@ -589,6 +608,34 @@ void ClickGUI::Render() {
 							yOffset += textHeight + (textPaddingY * 2.f);
 							break;
 						}
+						case SettingType::PAGE_S: {
+							PageSetting* pageSetting = static_cast<PageSetting*>(setting);
+							int& pageValue = (*pageSetting->valuePtr);
+
+							if (sRectPos.contains(mousePos)) {
+								if (isLeftClickDown) {
+									pageValue++;
+									if (pageValue >= (int)pageSetting->pageNames.size())
+										pageValue = 0;
+									isLeftClickDown = false;
+								}
+								else if (isRightClickDown) {
+									pageValue--;
+									if (pageValue < 0)
+										pageValue = (int)pageSetting->pageNames.size() - 1;
+									isRightClickDown = false;
+								}
+							}
+
+							std::string pageName = pageSetting->pageNames[pageValue];
+							Vec2<float> pageTextPos = Vec2<float>(sRectPos.z - textPaddingX - D2D::getTextWidth(pageName, textSize), sTextPos.y);
+
+							D2D::drawText(sTextPos, settingName + ":", UIColor(255, 255, 255), textSize);
+							D2D::drawText(pageTextPos, pageName, UIColor(255, 255, 255), textSize);
+
+							yOffset += textHeight + (textPaddingY * 2.f);
+							break;
+						}
 						}
 						D2D::fillRectangle(sRectPos, UIColor(255, 255, 255, (int)(25 * setting->selectedAnim)));
 						yOffset += settingSpace;
@@ -691,6 +738,11 @@ void ClickGUI::onLoadConfig(void* confVoid) {
 					(*enumSetting->value) = confValue.get<int>();
 					break;
 				}
+				case SettingType::PAGE_S: {
+					PageSetting* pageSetting = static_cast<PageSetting*>(setting);
+					(*pageSetting->valuePtr) = confValue.get<int>();
+					break;
+				}
 				case SettingType::COLOR_S: {
 					ColorSetting* colorSetting = static_cast<ColorSetting*>(setting);
 					(*colorSetting->colorPtr) = ColorUtil::HexStringToColor(confValue.get<std::string>());
@@ -762,6 +814,11 @@ void ClickGUI::onSaveConfig(void* confVoid) {
 		case SettingType::COLOR_S: {
 			ColorSetting* colorSetting = static_cast<ColorSetting*>(setting);
 			obj[settingName] = ColorUtil::ColorToHexString((*colorSetting->colorPtr));
+			break;
+		}
+		case SettingType::PAGE_S: {
+			PageSetting* pageSetting = static_cast<PageSetting*>(setting);
+			obj[settingName] = (*pageSetting->valuePtr);
 			break;
 		}
 		case SettingType::SLIDER_S: {
