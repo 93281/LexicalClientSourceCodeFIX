@@ -1,5 +1,5 @@
 #include "FastEat.h"
-
+//
 FastEat::FastEat() : Module("FastEat", "Eat food faster.", Category::PLAYER) {
 	registerSetting(new SliderSetting<int>("Duration", "NULL", &duration, 32, 1, 32));
 }
