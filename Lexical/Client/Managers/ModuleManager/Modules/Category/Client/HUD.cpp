@@ -6,7 +6,7 @@ HUD::HUD() : Module("HUD", "Displays HUD Elements", Category::CLIENT) {
 	registerSetting(new BoolSetting("Direction", "NULL", &showDirection, false));
 	registerSetting(new BoolSetting("Effects", "NULL", &showEffects, true));
 	registerSetting(new BoolSetting("Watermark", "NULL", &waterMark, true));
-
+	//
 	registerSetting(new SliderSetting<int>("Opacity", "NULL", &opacity, 130, 0, 255));
 	registerSetting(new SliderSetting<int>("Spacing", "NULL", &spacing, -2, -3, 3));
 	registerSetting(new SliderSetting<int>("Offset", "NULL", &offset, 10, 0, 30));
