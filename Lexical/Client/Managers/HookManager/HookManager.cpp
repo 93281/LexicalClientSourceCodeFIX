@@ -12,6 +12,7 @@
 #include "Hooks/Render/RenderHitSelectHook.h"
 #include "Hooks/Render/RenderLevelHook.h"
 #include "Hooks/Render/SetUpAndRenderHook.h"
+#include "Hooks/Render/HurtColorHook.h"
 #include "Hooks/Network/SendPacketHook.h"
 #include "Hooks/World/Block/GetBlockHook.h"
 #include "Hooks/World/Entity/ActorLerpMotionHook.h"
@@ -43,6 +44,7 @@ void HookManager::init() {
 	RequestHook<GetGammaHook>(Addresses::Options_getGamma);
 	RequestHook<GetViewPerspectiveHook>(Addresses::Options_getViewPerspective);
 	RequestHook<HurtCamHook>(Addresses::CauseHurtCamFunc);
+	RequestHook<HurtColorHook>("E8 ? ? ? ? E9 ? ? ? ? 8B 43 ? 48 8D 54 24 ? 48 8B 4B ? 89 44 24 ? E8 ? ? ? ? 4C 8B D8");
 	RequestHook<RenderHitSelectHook>(Addresses::LevelRendererPlayer_renderHitSelect);
 	RequestHook<RenderLevelHook>(Addresses::LevelRenderer_renderLevel);
 	RequestHook<SetUpAndRenderHook>(Addresses::ScreenView_setUpAndRender);

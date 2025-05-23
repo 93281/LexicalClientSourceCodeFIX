@@ -35,7 +35,7 @@ void ModuleManager::init() {
 	moduleList.push_back(new ChunkBorders());
 	moduleList.push_back(new CustomFov());
 	moduleList.push_back(new ESP());
-	//moduleList.push_back(new HurtColor()); i can fix htis diamond trust
+//	moduleList.push_back(new HurtColor()); 
 	moduleList.push_back(new Fullbright());
 	moduleList.push_back(new GlintColor());
 	moduleList.push_back(new ViewModel());

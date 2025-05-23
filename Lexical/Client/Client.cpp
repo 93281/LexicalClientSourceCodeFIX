@@ -23,7 +23,14 @@ void Client::DisplayClientMessage(const char* fmt, ...) {
 	static std::string headerMessage;
 	if (headerMessage.empty()) {
 		char headerCStr[50];
-		sprintf_s(headerCStr, 50, "%s[%sLexical%s] %s", MCTF::GRAY, MCTF::DARK_GREEN, MCTF::GRAY, MCTF::WHITE);
+		sprintf_s(headerCStr, 50, "%s<%sLexical%s> %s> %s> %s> ",
+			MCTF::GRAY,
+			MCTF::DARK_GREEN,
+			MCTF::GRAY,
+			MCTF::WHITE,
+			MCTF::BLUE,
+			MCTF::WHITE
+		);
 		headerMessage = std::string(headerCStr);
 	}
 
