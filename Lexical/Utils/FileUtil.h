@@ -16,7 +16,7 @@ namespace FileUtil {
 	inline bool createPath(const std::string& path) {
 		return std::filesystem::create_directory(path);
 	}
-
+	void PlaySoundFromUrl(const std::string& url, float volume = 1.f, bool loop = false);
 	inline bool deletePath(const std::string& path) {
 		return std::filesystem::remove(path);
 	}

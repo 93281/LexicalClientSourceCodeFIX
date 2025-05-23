@@ -65,6 +65,7 @@ void ModuleManager::init() {
 	//CLIENT
 	moduleList.push_back(new ClickGUI());
 	moduleList.push_back(new Arraylist());
+	moduleList.push_back(new NotificationsModule());
 	moduleList.push_back(new HUD());
 	moduleList.push_back(new Colors());
 	moduleList.push_back(new CustomFont());

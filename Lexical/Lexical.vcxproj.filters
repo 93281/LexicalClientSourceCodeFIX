@@ -306,6 +306,9 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\Notifications.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libs\libhat\libhat.lib" />
@@ -2122,6 +2125,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Client\Managers\ModuleManager\Modules\ModuleBase\Settings\PageSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\Notifications.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

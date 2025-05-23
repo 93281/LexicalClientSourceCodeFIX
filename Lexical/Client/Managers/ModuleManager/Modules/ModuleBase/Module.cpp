@@ -57,11 +57,19 @@ bool Module::runOnBackground() {
 void Module::setEnabled(bool enable) {
 	if (this->enabled != enable) {
 		this->enabled = enable;
+		if (ModuleManager::getModule<NotificationsModule>()->isEnabled()) {
+			if (this->getModuleName() != "ClickGui") {
+				std::string message = std::string(this->getModuleName()) + (enabled ? " has been enabled" : " has been disabled");
+				NotificationManager::addNotification(message, 5.f);
+			}
+		}
 		if (enable) {
 			this->onEnable();
+			FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_on.wav");
 		}
 		else {
 			this->onDisable();
+			FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_off.wav");
 		}
 	}
 }
@@ -71,15 +79,11 @@ void Module::toggle() {
 }
 
 void Module::onDisable() {
-	/*if (ModuleManager::getModule<ToggleSounds>()->isEnabled()) {
-		FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_off.wav");
-	}*/
+
 }
 
 void Module::onEnable() {
-	/*if (ModuleManager::getModule<ToggleSounds>()->isEnabled()) {
-		FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_on.wav");
-	}*/
+
 }
 
 void Module::onKeyUpdate(int key, bool isDown) {
