@@ -23,7 +23,6 @@ AutoCrystal::AutoCrystal() : Module("AutoCrystal", "Automatically breaks and pla
 	registerSetting(new SliderSetting<int>("BoostSpeed", "Speed of ID prediction", &predictSpeed, 10, 0, 20, 2));
 	registerSetting(new SliderSetting<float>("BoostDamage", "Minimum damage for boosting", &boostDmg, 10.f, 0.f, 20.f, 2));
 
-	registerSetting(new BoolSetting("Rotate", "Rotate to placement locations", &rotate, true, 3));
 	registerSetting(new BoolSetting("Swap", "Swap to end crystal", &swap, true, 3));
 	registerSetting(new BoolSetting("SwitchBack", "Switch back to previous slot", &switchBack, true, 3));
 
@@ -31,6 +30,7 @@ AutoCrystal::AutoCrystal() : Module("AutoCrystal", "Automatically breaks and pla
 	registerSetting(new ColorSetting("Color", "Render color", &renderColor, { 255, 0, 0 }, true, 4));
 	//registerSetting(new BoolSetting("RenderDamage", "Display damage dealt during render", &dmgText, true, 4)); im lazy ok
 
+	registerSetting(new BoolSetting("Rotate", "Rotate to placement locations", &rotate, true, 5));
 	registerSetting(new BoolSetting("SelfTest", "Enable testing on yourself", &selfTest, false, 5));
 
 	registerSetting(new BoolSetting("Break", "Explode End Crystals at Target", &explode, true, 6));
@@ -186,6 +186,8 @@ void AutoCrystal::onSendPacket(Packet* packet) {
 			authPkt->rotation = angle; 
 			authPkt->headYaw = angle.y;
 		}
+	}
+	if (!placeList.empty()) {
 		if (!predict || !shouldChange) return;
 		if (packet->getId() == PacketID::InventoryTransaction) {
 			InventoryTransactionPacket* invPkt = (InventoryTransactionPacket*)packet;
