@@ -100,17 +100,26 @@ void KillAura::onNormalTick(LocalPlayer* localPlayer) {
 			for (auto& target : targetList)
 				for (int i = 0; i < multiplier; ++i)
 					Attack(target);
+			if (HitResult* hitResult = Game::getLocalPlayer()->level->getHitResult()) {
+				hitResult->type = HitResultType::ENTITY;
+				hitResult->rayDirection = targetList[0]->getPos();
+				hitResult->endPos = targetList[0]->getPos();
+			}
 		}
 		else {
 			for (int i = 0; i < multiplier; ++i)
 				Attack(targetList[0]);
+			if (HitResult* hitResult = Game::getLocalPlayer()->level->getHitResult()) {
+				hitResult->type = HitResultType::ENTITY;
+				hitResult->rayDirection = targetList[0]->getPos();
+				hitResult->endPos = targetList[0]->getPos();
+			}
 		}
 		oTick = 0;
 	}
 	else {
 		oTick++;
 	}
-
 	if (autoWeaponMode == 2)
 		localPlayer->playerInventory->selectedSlot = oldSlot;
 }
