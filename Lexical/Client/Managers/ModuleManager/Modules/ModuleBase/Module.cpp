@@ -65,11 +65,11 @@ void Module::setEnabled(bool enable) {
 		}
 		if (enable) {
 			this->onEnable();
-			FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_on.wav");
+			FileUtil::PlaySoundFromUrl("https://raw.githubusercontent.com/93281/tickware.sound/main/preview.mp3");
 		}
 		else {
 			this->onDisable();
-			FileUtil::PlaySoundFromUrl("https://yiffing.zone/sounds/notify_off.wav");
+			FileUtil::PlaySoundFromUrl("https://raw.githubusercontent.com/93281/tickware.sound/main/preview.mp3");
 		}
 	}
 }
