@@ -47,6 +47,11 @@ bool AutoCrystal::isPlaceValid(const BlockPos& blockPos, Actor* actor) {
 	int blockId = Game::clientInstance->getRegion()->getBlock(blockPos)->blockLegacy->blockId;
 	if (!(blockId == 7 || blockId == 49)) return false;
 	if (Game::getLocalPlayer()->getEyePos().dist(actor->getEyePos()) > placeRange) return false;
+	if (!java) {
+		Vec3<int>checkPos(blockPos.x, blockPos.y + 2, blockPos.z);
+		int blockId22 = Game::clientInstance->getRegion()->getBlock(checkPos)->blockLegacy->blockId;
+		if (blockId22 != 0) return false;
+	}
 	Vec3 blockBasePos(blockPos.x, blockPos.y + 1, blockPos.z);
 	Vec3 blockTopPos(blockPos.x + 1, blockPos.y + 2, blockPos.z + 1);
 	const AABB blockAABB(blockBasePos.toFloat(), blockTopPos.toFloat());
