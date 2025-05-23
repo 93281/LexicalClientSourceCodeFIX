@@ -312,6 +312,9 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\EntityFly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\Chat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libs\libhat\libhat.lib" />
@@ -2134,6 +2137,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Movement\EntityFly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\Chat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

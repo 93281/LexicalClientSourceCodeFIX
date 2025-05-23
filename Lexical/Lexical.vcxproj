@@ -159,6 +159,7 @@
     <ClCompile Include="Client\Managers\HookManager\HookManager.cpp" />
     <ClCompile Include="Client\Managers\HookManager\Hooks\FuncHook.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\ModuleManager.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\Chat.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\ColorsMod.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Client\Notifications.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Combat\AutoCrystal.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\GameMode\StopDestroyBlockHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Level\LevelTickHook.h" />
     <ClInclude Include="Client\Managers\ModuleManager\ModuleManager.h" />
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\Chat.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\ColorsMod.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\Notifications.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Combat\AutoCrystal.h" />

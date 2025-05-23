@@ -66,6 +66,7 @@
 #include "Modules/Category/Client/Notifications.h"
 #include "Modules/Category/Client/Hud.h"
 #include "Modules/Category/Client/ArrayList.h"
+#include "Modules/Category/Client/Chat.h"
 #include "Modules/Category/Client/ColorsMod.h"
 #include "Modules/Category/Client/CustomFont.h"
 
