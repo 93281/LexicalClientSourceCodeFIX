@@ -47,12 +47,12 @@ void setpseeed(float speed) {
 
 void ElytraFly::onNormalTick(LocalPlayer* localPlayer) {
     float flySpeed = Speed;
-    bool hasElytraInSlot = localPlayer->getArmor(1)->item && localPlayer->getArmor(1)->item->texture_name == "elytra";  // Elytra check
+    bool hasElytraInSlot = localPlayer->getArmor(1)->item && localPlayer->getArmor(1)->item->texture_name == "elytra";
     bool isRightSize = localPlayer->aabbShape->aabb.size.y <= 0.6f;
-    if (isRightSize && hasElytraInSlot) {
+    bool extraCheck = localPlayer->getStatusFlag(ActorFlags::Gliding);
+    if (isRightSize && hasElytraInSlot && extraCheck) {
         setpseeed(flySpeed);
         if (Game::isKeyDown(upKey)) localPlayer->stateVector->velocity.y = Speedy / 10.0f;
         else if (Game::isKeyDown(downKey)) localPlayer->stateVector->velocity.y = -Speedy / 10.0f;
-        else localPlayer->stateVector->velocity.y = 0.05f; // counteract glide
     }
 }
