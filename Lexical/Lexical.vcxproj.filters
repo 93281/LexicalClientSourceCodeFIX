@@ -255,9 +255,6 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\Spammer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Speed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\ReverseStep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

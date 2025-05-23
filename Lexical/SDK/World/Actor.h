@@ -74,6 +74,13 @@ public:
     void removeComponent() {
         getEntityContext()->getRegistry().remove<T>(getEntityContext()->mEntity);
     }
+    bool isOnGround() {
+        return hasComponent<OnGroundFlagComponent>();
+    }
+
+    void jumpFromGround() {
+        getOrEmplaceComponent<FlagComponent<JumpFromGroundRequestFlag>>();
+    }
 
 
     ActorEquipmentComponent* getActorEquipmentComponent() {

@@ -182,7 +182,6 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\NoClip.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Phase.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\ReverseStep.cpp" />
-    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Speed.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Spider.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\Step.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\AntiBot.cpp" />
