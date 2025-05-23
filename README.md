@@ -1,1 +1,1 @@
-added a read.me
+ts is gonna be like Trinity but better and less buggy
