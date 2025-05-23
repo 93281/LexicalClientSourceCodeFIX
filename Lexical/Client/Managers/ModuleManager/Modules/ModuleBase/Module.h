@@ -94,7 +94,8 @@ public:
 	virtual void onD2DRender();
 	virtual void onMCRender(MinecraftUIRenderContext* renderCtx);
 	virtual void onLevelRender();
-	//virtual void onMatrixRender(glm::mat4* matrix); later
+	virtual void onMatrixRender(glm::mat4* matrix); 
 	virtual void onLoadConfig(void* conf);
 	virtual void onSaveConfig(void* conf);
+
 };

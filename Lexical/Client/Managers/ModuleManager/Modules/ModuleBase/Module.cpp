@@ -53,7 +53,8 @@ void Module::setKeybind(int key) {
 bool Module::runOnBackground() {
 	return false;
 }
-
+void Module::onMatrixRender(glm::mat4* matrix) {
+}
 void Module::setEnabled(bool enable) {
 	if (this->enabled != enable) {
 		this->enabled = enable;

@@ -19,7 +19,8 @@ namespace D2D {
 	void Render();
 	void Clean();
 	void Flush();
-
+	void InitWICFactory();
+	void CleanupWICFactory();
 	Vec2<float> getWindowSize();
 	void drawText(const Vec2<float>& textPos, const std::string& textStr, const UIColor& color, float textSize = 1.f, bool storeTextLayout = true);
 	float getTextWidth(const std::string& textStr, float textSize = 1.f, bool storeTextLayout = true);
@@ -30,7 +31,8 @@ namespace D2D {
 	void drawCircle(const Vec2<float>& centerPos, const UIColor& color, float radius, float width = 1.f);
 	void fillCircle(const Vec2<float>& centerPos, const UIColor& color, float radius);
 	void addBlur(const Vec4<float>& rect, float strength, bool flush = true);
-
+	ID2D1Bitmap* loadBitmapFromFile(const std::wstring& filePath);
 	void lookAt(float viewMatrix[4][4], const Vec3<float>& eye, const Vec3<float>& center, const Vec3<float>& up);
 	void perspective(float projectionMatrix[4][4], float fov, float aspect, float zNear, float zFar);
+	void drawImageAt3DPos(const Vec3<float>& worldPos, ID2D1Bitmap* bitmap, float size);
 };

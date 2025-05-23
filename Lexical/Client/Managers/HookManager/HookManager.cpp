@@ -21,6 +21,7 @@
 #include "Hooks/World/Entity/ActorSetRotHook.h"
 #include "Hooks/World/Entity/MobSwingDurationHook.h"
 #include "Hooks/World/Entity/PlayerSlowDownHook.h"
+#include "Hooks/World/Entity/BobHurtHook.h"
 #include "Hooks/World/GameMode/StartDestroyBlockHook.h"
 #include "Hooks/World/GameMode/StopDestroyBlockHook.h"
 #include "Hooks/World/GameMode/GetPickRangeHook.h"
@@ -45,7 +46,7 @@ void HookManager::init() {
 	RequestHook<RenderHitSelectHook>(Addresses::LevelRendererPlayer_renderHitSelect);
 	RequestHook<RenderLevelHook>(Addresses::LevelRenderer_renderLevel);
 	RequestHook<SetUpAndRenderHook>(Addresses::ScreenView_setUpAndRender);
-
+	RequestHook<BobHurtHook>("40 53 56 48 83 EC 78 ? ? 7C");
 	{
 		// Network Hook
 		uintptr_t** PacketSenderVTable = (uintptr_t**)Addresses::PacketSenderVTable;

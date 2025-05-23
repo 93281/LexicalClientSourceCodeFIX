@@ -482,3 +482,95 @@ ID2D1SolidColorBrush* getSolidColorBrush(const UIColor& color) {
 	}
 	return colorBrushCache[colorBrushKey].get();
 }
+#include <wincodec.h> 
+#pragma comment(lib, "windowscodecs.lib") 
+
+IWICImagingFactory* wicFactory = nullptr;
+
+void D2D::InitWICFactory() {
+	if (!wicFactory) {
+		HRESULT hr = CoCreateInstance(
+			CLSID_WICImagingFactory,
+			nullptr,
+			CLSCTX_INPROC_SERVER,
+			IID_PPV_ARGS(&wicFactory)
+		);
+		if (FAILED(hr)) {
+		}
+	}
+}
+
+void D2D::CleanupWICFactory() {
+	if (wicFactory) {
+		wicFactory->Release();
+		wicFactory = nullptr;
+	}
+}
+ID2D1Bitmap* D2D::loadBitmapFromFile(const std::wstring& filePath) {
+	IWICBitmapDecoder* decoder = nullptr;
+	IWICBitmapFrameDecode* frame = nullptr;
+	IWICFormatConverter* converter = nullptr;
+	ID2D1Bitmap* bitmap = nullptr;
+
+	HRESULT hr = wicFactory->CreateDecoderFromFilename(
+		filePath.c_str(),
+		nullptr,
+		GENERIC_READ,
+		WICDecodeMetadataCacheOnLoad,
+		&decoder
+	);
+	if (FAILED(hr)) return nullptr;
+
+	hr = decoder->GetFrame(0, &frame);
+	if (FAILED(hr)) {
+		decoder->Release();
+		return nullptr;
+	}
+
+	hr = wicFactory->CreateFormatConverter(&converter);
+	if (FAILED(hr)) {
+		frame->Release();
+		decoder->Release();
+		return nullptr;
+	}
+
+	hr = converter->Initialize(
+		frame,
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		nullptr,
+		0.f,
+		WICBitmapPaletteTypeMedianCut
+	);
+	if (FAILED(hr)) {
+		converter->Release();
+		frame->Release();
+		decoder->Release();
+		return nullptr;
+	}
+
+	hr = d2dDeviceContext->CreateBitmapFromWicBitmap(converter, nullptr, &bitmap);
+
+	converter->Release();
+	frame->Release();
+	decoder->Release();
+
+	if (FAILED(hr)) return nullptr;
+
+	return bitmap;
+}
+
+void D2D::drawImageAt3DPos(const Vec3<float>& worldPos, ID2D1Bitmap* bitmap, float size) {
+	Vec2<float> screenPos;
+	if (!MCR::worldToScreen(worldPos, screenPos)) {
+		return;
+	}
+	float halfSize = size / 2.0f;
+	D2D1_RECT_F destRect = D2D1::RectF(
+		screenPos.x - halfSize,
+		screenPos.y - halfSize,
+		screenPos.x + halfSize,
+		screenPos.y + halfSize
+	);
+	d2dDeviceContext->DrawBitmap(bitmap, destRect);
+}

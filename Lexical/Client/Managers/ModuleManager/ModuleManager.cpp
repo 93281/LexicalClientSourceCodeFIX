@@ -1,6 +1,5 @@
 #include "ModuleManager.h"
 #include "../../Client.h"
-
 void ModuleManager::init() {
 
 	//COMBAT
@@ -10,6 +9,7 @@ void ModuleManager::init() {
 	moduleList.push_back(new Hitbox());
 	moduleList.push_back(new Reach());
 	moduleList.push_back(new Surround());
+	moduleList.push_back(new HitFX());
 	moduleList.push_back(new KillAura());
 
 	//MOVEMENT
@@ -38,6 +38,7 @@ void ModuleManager::init() {
 	//moduleList.push_back(new HurtColor()); i can fix htis diamond trust
 	moduleList.push_back(new Fullbright());
 	moduleList.push_back(new GlintColor());
+	moduleList.push_back(new ViewModel());
 	moduleList.push_back(new NoHurtCam());
 	moduleList.push_back(new NameTags());
 	moduleList.push_back(new NoRender);
@@ -112,7 +113,16 @@ void ModuleManager::onClientTick() {
 		}
 	}
 }
+void ModuleManager::onMatrixRender(glm::mat4* matrix) {
+	if (!Client::isInitialized())
+		return;
 
+	for (auto& mod : moduleList) {
+		if (mod->isEnabled() || mod->runOnBackground()) {
+			mod->onMatrixRender(matrix);
+		}
+	}
+}
 void ModuleManager::onClientTick(Packet* packet) {
 	if (!Client::isInitialized())
 		return;

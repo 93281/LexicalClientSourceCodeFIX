@@ -191,6 +191,7 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\NoSwing.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\BreakIndicators.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\CameraTweaks.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\HitFX.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\HurtColor.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\Nametags.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\World\AirPlace.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\ActorNormalTickHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\ActorSetRotHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\ActorSwingHook.h" />
+    <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\BobHurtHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\MobSwingDurationHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\Entity\PlayerSlowDownHook.h" />
     <ClInclude Include="Client\Managers\HookManager\Hooks\World\GameMode\GetPickRangeHook.h" />
@@ -327,8 +329,10 @@
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\AutoEmote.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\BreakIndicators.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\CameraTweaks.h" />
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\HitFX.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\HurtColor.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\Nametags.h" />
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\ViewModel.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\World\AirPlace.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\Offhand.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Client\Arraylist.h" />

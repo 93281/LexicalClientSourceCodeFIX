@@ -5,7 +5,7 @@
 #include <memory>
 #include <string_view>
 #include "../SDK/Addresses.h"
-
+#include <string>
 #define CLASS_MEMBER(type, name, offset)																			\
 __declspec(property(get = get##name, put = set##name)) type name;													\
 inline type& get##name() { return *reinterpret_cast<type*>(reinterpret_cast<uintptr_t>(this) + offset); }			\
@@ -59,6 +59,20 @@ namespace MemoryUtil {
 		VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &oldprotect);
 		memcpy(dst, src, size);
 		VirtualProtect(dst, size, oldprotect, &oldprotect);
+	}
+
+	inline void writeBytes(uintptr_t address, std::string bytes, int length) {
+		DWORD oldProtect;
+		VirtualProtect((LPVOID)address, length, PAGE_EXECUTE_READWRITE, &oldProtect);
+		memcpy((LPVOID)address, bytes.c_str(), length);
+		VirtualProtect((LPVOID)address, length, oldProtect, &oldProtect);
+	}
+
+	inline void readBytes(void* address, void* buffer, size_t size) {
+		DWORD oldProtect;
+		VirtualProtect(address, size, PAGE_EXECUTE_READWRITE, &oldProtect);
+		memcpy(buffer, address, size);
+		VirtualProtect(address, size, oldProtect, &oldProtect);
 	}
 }
 

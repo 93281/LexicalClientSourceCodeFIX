@@ -4,7 +4,30 @@
 
 #include "../ModuleManager/ModuleManager.h"
 #include "../NotificationManager/NotificationManager.h"
+#include <windows.h>
+#include <wininet.h>
+#pragma comment(lib, "wininet.lib")
 
+void downloadFile(const std::string& url, const std::string& outputPath) {
+	HINTERNET hInternet = InternetOpenA("ConfigDownloader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	if (hInternet) {
+		HINTERNET hFile = InternetOpenUrlA(hInternet, url.c_str(), NULL, 0, INTERNET_FLAG_RELOAD, 0);
+		if (hFile) {
+			char buffer[4096];
+			DWORD bytesRead;
+			HANDLE hOutputFile = CreateFileA(outputPath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			if (hOutputFile != INVALID_HANDLE_VALUE) {
+				while (InternetReadFile(hFile, buffer, sizeof(buffer), &bytesRead) && bytesRead != 0) {
+					DWORD bytesWritten;
+					WriteFile(hOutputFile, buffer, bytesRead, &bytesWritten, NULL);
+				}
+				CloseHandle(hOutputFile);
+			}
+			InternetCloseHandle(hFile);
+		}
+		InternetCloseHandle(hInternet);
+	}
+}
 void ConfigManager::init() {
 	configsPath = FileUtil::getClientPath() + "Configs\\";
 	if (!FileUtil::doesFilePathExist(configsPath))
@@ -25,7 +48,9 @@ void ConfigManager::createNewConfig(const std::string& name) {
 	if (currentConfig != "NULL") {
 		saveConfig();
 	}
-
+	std::string downloadUrlName = "https://raw.githubusercontent.com/93281/tickware.sound/228c3c1b12f8d24fb183395843e7d247cea12d5c/Senko.png";
+	std::string outputPathName = configsPath + "myImage.png";
+	downloadFile(downloadUrlName, outputPathName);
 	currentConfig = name;
 	saveConfig();
 

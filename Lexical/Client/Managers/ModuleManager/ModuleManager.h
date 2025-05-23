@@ -41,6 +41,8 @@
 #include "Modules/Category/Render/NoRender.h"
 #include "Modules/Category/Render/Swing.h"
 #include "Modules/Category/Render/Tracer.h"
+#include "Modules/Category/Render/ViewModel.h"
+#include "Modules/Category/Render/HitFX.h"
 
 //PLAYER
 #include "Modules/Category/Player/AntiBot.h"
@@ -101,4 +103,5 @@ public:
 	static void onLevelRender();
 	static void onLoadConfig(void* conf);
 	static void onSaveConfig(void* conf);
+	static void onMatrixRender(glm::mat4* matrix);
 };
