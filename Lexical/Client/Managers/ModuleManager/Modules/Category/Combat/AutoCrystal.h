@@ -109,6 +109,7 @@ protected:
 protected:
 	void placeCrystal(GameMode* gm);
 	void breakCrystal(GameMode* gm);
+	virtual void onLevelRender() override;
 public:
 	AutoCrystal();
 	virtual void onNormalTick(LocalPlayer* localPlayer) override;

@@ -193,3 +193,147 @@ void AutoCrystal::onSendPacket(Packet* packet) {
 		}
 	}
 }
+struct CrystalRenderState {
+	Vec3<float> startPos;
+	Vec3<float> targetPos;
+	float startTime = -1.0f;
+	float duration = 0.25f;
+	bool isFadingOut = false;
+	AABB oldRenderAABB;
+	bool hasOldBox = false;
+};
+
+
+float getTime() {
+	static auto start = std::chrono::steady_clock::now();
+	auto now = std::chrono::steady_clock::now();
+	std::chrono::duration<float> elapsed = now - start;
+	return elapsed.count();
+}
+
+std::unordered_map<Vec3<int>, CrystalRenderState> animationStates;
+
+void AutoCrystal::onLevelRender() {
+	if (renderType == 0 || placeList.empty()) return;
+
+	UIColor baseColor(renderColor.r, renderColor.g, renderColor.b, renderColor.a);
+	float currentTime = getTime();
+	std::unordered_set<Vec3<int>> currentBlocks;
+	size_t renderCount = std::min((size_t)wasteAmount, placeList.size());
+
+	for (size_t i = 0; i < renderCount; i++) {
+		const CrystalPlace& place = placeList[i];
+		Vec3<int> blockPos = place.blockPos;
+		currentBlocks.insert(blockPos);
+
+		Vec3<float> blockPosF(
+			static_cast<float>(blockPos.x),
+			static_cast<float>(blockPos.y),
+			static_cast<float>(blockPos.z)
+		);
+
+		auto& state = animationStates[blockPos];
+
+		if (state.startTime < 0.0f) {
+			state.startPos = blockPosF;
+			state.targetPos = blockPosF;
+			state.startTime = currentTime;
+			state.isFadingOut = false;
+
+			state.oldRenderAABB = AABB(
+				Vec3<float>(blockPosF.x, blockPosF.y, blockPosF.z),
+				Vec3<float>(blockPosF.x + 1.0f, blockPosF.y + 1.0f, blockPosF.z + 1.0f)
+			);
+			state.hasOldBox = true;
+		}
+		else if (state.targetPos.x != blockPosF.x || state.targetPos.y != blockPosF.y || state.targetPos.z != blockPosF.z) {
+			state.startPos = state.targetPos;
+			state.targetPos = blockPosF;
+			state.startTime = currentTime;
+			state.isFadingOut = false;
+		}
+
+		float t = (currentTime - state.startTime) / state.duration;
+		t = std::clamp(t, 0.0f, 1.0f);
+		float easedT = t * t * (3.0f - 2.0f * t);
+
+		Vec3<float> interpPos;
+		interpPos.x = state.startPos.x + (state.targetPos.x - state.startPos.x) * easedT;
+		interpPos.y = state.startPos.y + (state.targetPos.y - state.startPos.y) * easedT;
+		interpPos.z = state.startPos.z + (state.targetPos.z - state.startPos.z) * easedT;
+
+		AABB targetAABB(
+			Vec3<float>(interpPos.x, interpPos.y, interpPos.z),
+			Vec3<float>(interpPos.x + 1.0f, interpPos.y + 1.0f, interpPos.z + 1.0f)
+		);
+
+		if (!state.hasOldBox) {
+			state.oldRenderAABB = targetAABB;
+			state.hasOldBox = true;
+		}
+		else {
+			float animSpeed = MCR::deltaTime * 12.0f;
+			state.oldRenderAABB.lower = state.oldRenderAABB.lower.lerp(targetAABB.lower, animSpeed, animSpeed, animSpeed);
+			state.oldRenderAABB.upper = state.oldRenderAABB.upper.lerp(targetAABB.upper, animSpeed, animSpeed, animSpeed);
+		}
+
+		AABB renderAABB = (renderType == 1) ? state.oldRenderAABB :
+			AABB(
+				Vec3<float>(
+					state.oldRenderAABB.lower.x,
+					state.oldRenderAABB.lower.y + 0.8f,
+					state.oldRenderAABB.lower.z
+				),
+				state.oldRenderAABB.upper
+			);
+
+		UIColor fadeColor = baseColor;
+		fadeColor.a = static_cast<unsigned char>(baseColor.a * easedT);
+
+		MCR::drawBox3dFilled(renderAABB, fadeColor, UIColor(0, 0, 0, 0), easedT);
+	}
+
+	// Fade out
+	for (auto it = animationStates.begin(); it != animationStates.end(); ) {
+		const Vec3<int>& blockPos = it->first;
+		CrystalRenderState& state = it->second;
+
+		if (currentBlocks.count(blockPos)) {
+			++it;
+			continue;
+		}
+
+		if (!state.isFadingOut) {
+			state.startPos = state.targetPos;
+			state.startTime = currentTime;
+			state.isFadingOut = true;
+		}
+
+		float t = (currentTime - state.startTime) / state.duration;
+		t = std::clamp(t, 0.0f, 1.0f);
+		float easedT = t * t * (3.0f - 2.0f * t);
+		float fadeAlpha = 1.0f - easedT;
+
+		AABB renderAABB = (renderType == 1) ? state.oldRenderAABB :
+			AABB(
+				Vec3<float>(
+					state.oldRenderAABB.lower.x,
+					state.oldRenderAABB.lower.y + 0.8f,
+					state.oldRenderAABB.lower.z
+				),
+				state.oldRenderAABB.upper
+			);
+
+		UIColor fadeColor = baseColor;
+		fadeColor.a = static_cast<unsigned char>(baseColor.a * fadeAlpha);
+
+		MCR::drawBox3dFilled(renderAABB, fadeColor, UIColor(0, 0, 0, 0), fadeAlpha);
+
+		if (t >= 1.0f) {
+			it = animationStates.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+}
