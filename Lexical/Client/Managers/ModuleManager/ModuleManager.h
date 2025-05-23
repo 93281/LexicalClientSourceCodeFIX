@@ -18,6 +18,7 @@
 #include "Modules/Category/Movement/Jetpack.h"
 #include "Modules/Category/Movement/Speed.h" 
 #include "Modules/Category/Movement/NoClip.h"
+#include "Modules/Category/Movement/EntityFly.h"
 #include "Modules/Category/Movement/ElytraFly.h"
 #include "Modules/Category/Movement/NoSlowDown.h"
 #include "Modules/Category/Movement/Phase.h"

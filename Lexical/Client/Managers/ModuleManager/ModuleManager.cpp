@@ -21,7 +21,8 @@ void ModuleManager::init() {
 	moduleList.push_back(new Phase());
 	moduleList.push_back(new Step());
 	moduleList.push_back(new Speed());
-	moduleList.push_back(new ElytraFly()); 
+	moduleList.push_back(new ElytraFly());
+	moduleList.push_back(new EntityFly());
 	moduleList.push_back(new NoClip());
 	moduleList.push_back(new ReverseStep());
 	moduleList.push_back(new Spider());
