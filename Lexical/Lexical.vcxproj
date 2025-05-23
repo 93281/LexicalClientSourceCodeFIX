@@ -170,6 +170,7 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Combat\Surround.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Movement\EntityFly.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoPot.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\FastEat.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\Disabler.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Misc\Spammer.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoTool.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\FastUse.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\NoSwing.cpp" />
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\PacketXP.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\BreakIndicators.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\CameraTweaks.cpp" />
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\HitFX.cpp" />
@@ -306,6 +308,7 @@
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Combat\Surround.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Misc\PopCounter.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Movement\EntityFly.h" />
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoPot.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\FastEat.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Misc\Disabler.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Misc\Spammer.h" />
@@ -325,6 +328,7 @@
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoTool.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\FastUse.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\NoSwing.h" />
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\PacketXP.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\AutoEmote.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\BreakIndicators.h" />
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\CameraTweaks.h" />

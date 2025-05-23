@@ -51,6 +51,8 @@
 #include "Modules/Category/Player/FastUse.h"
 #include "Modules/Category/Player/NoSwing.h"
 #include "Modules/Category/Player/FastEat.h"
+#include "Modules/Category/Player/PacketXP.h"
+#include "Modules/Category/Player/Autopot.h"
 #include "Modules/Category/Player/Offhand.h"
 
 //WORLD

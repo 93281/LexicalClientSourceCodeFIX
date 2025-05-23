@@ -53,6 +53,8 @@ void ModuleManager::init() {
 	moduleList.push_back(new FastUse());
 	moduleList.push_back(new NoSwing());
 	moduleList.push_back(new Offhand());
+	moduleList.push_back(new AutoPot());
+	moduleList.push_back(new PacketXP());
 
 	//WORLD
 	moduleList.push_back(new AirPlace());

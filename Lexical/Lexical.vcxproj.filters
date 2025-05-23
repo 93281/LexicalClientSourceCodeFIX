@@ -315,6 +315,12 @@
     <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Render\HitFX.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoPot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Managers\ModuleManager\Modules\Category\Player\PacketXP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libs\libhat\libhat.lib" />
@@ -2149,6 +2155,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Render\HitFX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\AutoPot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Managers\ModuleManager\Modules\Category\Player\PacketXP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
