@@ -3,13 +3,13 @@
 /* quick fix prob bad */
 int selectedPagsse = 0;
 AutoCrystal::AutoCrystal() : Module("AutoCrystal", "Automatically breaks and places Crystal", Category::COMBAT) {
-	registerSetting(new PageSetting("Page", "Module Page", { "General", "Range", "Speed", "Inventory", "Render", "Misc" }, & selectedPagsse));
+	registerSetting(new PageSetting("Page", "Module Page", { "Place", "Range", "Speed", "Inventory", "Render", "Misc", "Break" }, &selectedPagsse));
 	this->modulePagePtr = &selectedPagsse;
 	registerSetting(new BoolSetting("Place", "Place End Crystals at Target", &place, true, 0));
-	registerSetting(new BoolSetting("Break", "Explode End Crystals at Target", &explode, true, 0));
 	registerSetting(new BoolSetting("MultiTask", "Multitasks like eating and crystalling", &multiTask, true, 0));
 	registerSetting(new BoolSetting("Safety", "Prioritizes safety over damage", &safety, true, 0));
 	registerSetting(new BoolSetting("Java", "For java servers", &java, false, 0));
+	registerSetting(new SliderSetting<int>("WasteAmount", "Number of crystals to place", &wasteAmount, 3, 1, 10, 0));
 
 	registerSetting(new SliderSetting<int>("PlaceDist", "Range for placing crystals", &placeRange, 5, 1, 12, 1));
 	registerSetting(new SliderSetting<int>("BreakDist", "Range for breaking crystals", &breakRange, 5, 1, 12, 1));
@@ -21,20 +21,21 @@ AutoCrystal::AutoCrystal() : Module("AutoCrystal", "Automatically breaks and pla
 	registerSetting(new SliderSetting<int>("PlaceSpeed", "Speed of placing crystals", &placeSpeed, 10, 0, 20, 2));
 	registerSetting(new SliderSetting<int>("BreakSpeed", "Speed of breaking crystals", &breakSpeed, 10, 0, 20, 2));
 	registerSetting(new SliderSetting<int>("BoostSpeed", "Speed of ID prediction", &predictSpeed, 10, 0, 20, 2));
-	registerSetting(new BoolSetting("Boost", "Predict crystal runtime ID for faster actions", &predict, false, 2));
-	registerSetting(new SliderSetting<int>("Packets", "Number of packets for prediction", &predictPacket, 5, 1, 10, 2));
 	registerSetting(new SliderSetting<float>("BoostDamage", "Minimum damage for boosting", &boostDmg, 10.f, 0.f, 20.f, 2));
 
-	registerSetting(new SliderSetting<int>("WasteAmount", "Number of crystals to place", &wasteAmount, 3, 1, 10, 3));
 	registerSetting(new BoolSetting("Rotate", "Rotate to placement locations", &rotate, true, 3));
 	registerSetting(new BoolSetting("Swap", "Swap to end crystal", &swap, true, 3));
 	registerSetting(new BoolSetting("SwitchBack", "Switch back to previous slot", &switchBack, true, 3));
 
 	registerSetting(new EnumSetting("Render", "Rendering mode for placements", { "Off", "Box", "Flat" }, &renderType, 0, 4));
-	registerSetting(new ColorSetting("Color", "Render color", &renderColor, { 255, 0, 0 }, 4));
-	registerSetting(new BoolSetting("RenderDamage", "Display damage dealt during render", &dmgText, true, 4));
+	registerSetting(new ColorSetting("Color", "Render color", &renderColor, { 255, 0, 0 }, true, 4));
+	//registerSetting(new BoolSetting("RenderDamage", "Display damage dealt during render", &dmgText, true, 4)); im lazy ok
 
 	registerSetting(new BoolSetting("SelfTest", "Enable testing on yourself", &selfTest, false, 5));
+
+	registerSetting(new BoolSetting("Break", "Explode End Crystals at Target", &explode, true, 6));
+	registerSetting(new BoolSetting("Boost", "Predict crystal runtime ID for faster actions", &predict, false, 6));
+	registerSetting(new SliderSetting<int>("Packets", "Number of packets for prediction", &predictPacket, 5, 1, 10, 6));
 }
 
 
