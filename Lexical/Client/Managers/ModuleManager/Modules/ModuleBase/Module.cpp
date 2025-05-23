@@ -65,7 +65,7 @@ void Module::setEnabled(bool enable) {
 		}
 		if (enable) {
 			this->onEnable();
-			FileUtil::PlaySoundFromUrl("https://raw.githubusercontent.com/93281/tickware.sound/main/preview.mp3");
+			FileUtil::PlaySoundFromUrl("https://raw.githubusercontent.com/93281/tickware.sound/main/preview.mp3"); //yes. this does work. change the link this one dead
 		}
 		else {
 			this->onDisable();
