@@ -176,10 +176,12 @@ void AutoCrystal::onNormalTick(LocalPlayer* localPlayer) {
 	if (place) generatePlacement(targetList[0]);
 	if (explode) getCrystals(targetList[0]);
 	const int oldSlot = InventoryUtils::getSelectedSlot();
-	if (swap) InventoryUtils::SwitchTo(InventoryUtils::getItem(720));
 	if (place) placeCrystal(Game::getLocalPlayer()->gameMode);
 	if (explode) breakCrystal(Game::getLocalPlayer()->gameMode);
-	if (switchBack) InventoryUtils::SwitchTo(oldSlot);
+	if (!placeList.empty()) {
+		if (switchBack) InventoryUtils::SwitchTo(oldSlot);
+		if (swap) InventoryUtils::SwitchTo(InventoryUtils::getItem(720));
+	}
 }
 
 void AutoCrystal::onSendPacket(Packet* packet) {
