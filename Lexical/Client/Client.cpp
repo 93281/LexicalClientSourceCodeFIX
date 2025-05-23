@@ -59,7 +59,7 @@ void Client::init() {
 	initialized = true;
 
 	Beep(50, 255);
-	NotificationManager::addNotification("Successfully injected Boost!", 5.f);
+	NotificationManager::addNotification("Successfully injected Lexical", 5.f);
 
 	if (!ConfigManager::doesConfigExist("default"))
 		ConfigManager::createNewConfig("default");

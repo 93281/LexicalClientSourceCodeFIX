@@ -47,21 +47,11 @@ void Disabler::onSendPacket(Packet* packet) {
     if (Mode == 0 && (packet->getName() == "PlayerAuthInputPacket" || packet->getName() == "MovePlayerPacket")) {
         auto* paip = (PlayerAuthInputPacket*)packet;
         auto* mpp = (MovePlayerPacket*)packet;
-        if (paip) {
-            float perc = static_cast<float>(paip->TicksAlive % 3) / 3.0f;
-            float targetY = (perc < 0.5f) ? 0.02f : -0.02f;
-            paip->position.y = Math::lerp(paip->position.y, paip->position.y + targetY, perc);
-            paip->mMove.y = -(1.0f / 3.0f);
-            if (paip->TicksAlive % 3 == 0) {
-                paip->mInputData |= InputData::StartJumping;
-            }
-            paip->mInputData |= InputData::Jumping;
-        }
-        if (mpp) {
-            float perc = static_cast<float>(mpp->mTick % 3) / 3.0f;
-            float targetY = (perc < 0.5f) ? 0.02f : -0.02f;
-            mpp->mPos.y = Math::lerp(mpp->mPos.y, mpp->mPos.y + targetY, perc);
-            mpp->mOnGround = true;
+        paip->mPlayMode = ClientPlayMode::Screen;
+        paip->mInputMode = InputModeAuth::Touch;
+        paip->TicksAlive = 0;
+        if (HitResult* hitResult = Game::getLocalPlayer()->level->getHitResult()) {
+            hitResult->type = HitResultType::AIR;
         }
     }
 

@@ -46,43 +46,69 @@ ID2D1SolidColorBrush* getSolidColorBrush(const UIColor& color);
 
 void D2D::NewFrame(IDXGISwapChain3* swapChain, ID3D11Device* d3d11Device, float fxdpi) {
 	if (!initD2D) {
+		HRESULT hr = S_OK;
 
-		D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &d2dFactory);
+		hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &d2dFactory);
+		if (FAILED(hr)) return;
 
-		DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(d2dWriteFactory), reinterpret_cast<IUnknown**>(&d2dWriteFactory));
+		hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(d2dWriteFactory), reinterpret_cast<IUnknown**>(&d2dWriteFactory));
+		if (FAILED(hr)) return;
 
-		IDXGIDevice* dxgiDevice;
-		d3d11Device->QueryInterface<IDXGIDevice>(&dxgiDevice);
-		d2dFactory->CreateDevice(dxgiDevice, &d2dDevice);
+		IDXGIDevice* dxgiDevice = nullptr;
+		hr = d3d11Device->QueryInterface(IID_PPV_ARGS(&dxgiDevice));
+		if (FAILED(hr) || dxgiDevice == nullptr) return;
+
+		hr = d2dFactory->CreateDevice(dxgiDevice, &d2dDevice);
 		dxgiDevice->Release();
+		if (FAILED(hr) || d2dDevice == nullptr) return;
 
-		d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dDeviceContext);
-		//d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS, &d2dDeviceContext);
+		hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dDeviceContext);
+		if (FAILED(hr) || d2dDeviceContext == nullptr) return;
 
-		d2dDeviceContext->CreateEffect(CLSID_D2D1GaussianBlur, &blurEffect);
+		hr = d2dDeviceContext->CreateEffect(CLSID_D2D1GaussianBlur, &blurEffect);
+		if (FAILED(hr) || blurEffect == nullptr) return;
 		blurEffect->SetValue(D2D1_GAUSSIANBLUR_PROP_BORDER_MODE, D2D1_BORDER_MODE_HARD);
 		blurEffect->SetValue(D2D1_GAUSSIANBLUR_PROP_OPTIMIZATION, D2D1_GAUSSIANBLUR_OPTIMIZATION_QUALITY);
 
 		IDXGISurface* dxgiBackBuffer = nullptr;
-		swapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
-		D2D1_BITMAP_PROPERTIES1 bitmapProperties
-			= D2D1::BitmapProperties1(D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
+		hr = swapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
+		if (FAILED(hr) || dxgiBackBuffer == nullptr) return;
+
+		D2D1_BITMAP_PROPERTIES1 bitmapProperties =
+			D2D1::BitmapProperties1(
+				D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
 				D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED), fxdpi, fxdpi);
-		d2dDeviceContext->CreateBitmapFromDxgiSurface(dxgiBackBuffer, &bitmapProperties, &sourceBitmap);
+
+		hr = d2dDeviceContext->CreateBitmapFromDxgiSurface(dxgiBackBuffer, &bitmapProperties, &sourceBitmap);
 		dxgiBackBuffer->Release();
+		if (FAILED(hr) || sourceBitmap == nullptr) return;
+
 		d2dDeviceContext->SetTarget(sourceBitmap);
 
 		initD2D = true;
 	}
 
-	d2dDeviceContext->BeginDraw();
+	if (d2dDeviceContext)
+		d2dDeviceContext->BeginDraw();
 }
 
 void D2D::EndFrame() {
-	if (!initD2D)
+	if (!initD2D || !d2dDeviceContext)
 		return;
 
-	d2dDeviceContext->EndDraw();
+	HRESULT hr = d2dDeviceContext->EndDraw();
+	if (FAILED(hr)) {
+		initD2D = false;
+
+		if (blurEffect) { blurEffect->Release(); blurEffect = nullptr; }
+		if (sourceBitmap) { sourceBitmap->Release(); sourceBitmap = nullptr; }
+		if (d2dDeviceContext) { d2dDeviceContext->Release(); d2dDeviceContext = nullptr; }
+		if (d2dDevice) { d2dDevice->Release(); d2dDevice = nullptr; }
+		if (d2dWriteFactory) { d2dWriteFactory->Release(); d2dWriteFactory = nullptr; }
+		if (d2dFactory) { d2dFactory->Release(); d2dFactory = nullptr; }
+
+		return;
+	}
 
 	static CustomFont* customFontMod = ModuleManager::getModule<CustomFont>();
 	if ((currentD2DFont != customFontMod->getSelectedFont()) || (currentD2DFontSize != customFontMod->fontSize) || (isFontItalic != customFontMod->italic)) {
@@ -91,7 +117,6 @@ void D2D::EndFrame() {
 		isFontItalic = customFontMod->italic;
 		textFormatCache.clear();
 		textLayoutCache.clear();
-		//textLayoutTemporary.clear();
 	}
 
 	static float timeCounter = 0.0f;
@@ -111,6 +136,7 @@ void D2D::EndFrame() {
 
 	textLayoutTemporary.clear();
 }
+
 
 void D2D::Render() {
 

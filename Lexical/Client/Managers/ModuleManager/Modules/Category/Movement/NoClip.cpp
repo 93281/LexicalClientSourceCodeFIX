@@ -1,13 +1,13 @@
 #include "NoClip.h"
 
 NoClip::NoClip() : Module("NoClip", "NoClip Fly", Category::MOVEMENT) {
-    registerSetting(new SliderSetting<float>("Horizontal Speed", "Horizontal speed", &hSpeed, 1.f, 0.2f, 11.f));
-    registerSetting(new SliderSetting<float>("Vertical Speed", "Vertical speed", &vSpeed, 0.5f, 0.2f, 3.f));
+    registerSetting(new SliderSetting<float>("Horizontal Speed", "Horizontal speed", &hSpeed, 1.f, 0.2f, 5.f));
+    registerSetting(new SliderSetting<float>("Vertical Speed", "Vertical speed", &vSpeed, 0.5f, 0.2f, 5.f));
     registerSetting(new SliderSetting<float>("Glide Value", "Value that how much u want to go down", &Glide, -0.02f, -0.3f, 0.f));
 }
 
 void NoClip::onNormalTick(LocalPlayer* localPlayer) {
-
+    localPlayer->stateVector->velocity = (0, Glide, 0);
     if (Game::canUseMoveKeys()) {
         float yaw = localPlayer->rotation->presentRot.y;
         bool isForward = Game::isKeyDown('W');

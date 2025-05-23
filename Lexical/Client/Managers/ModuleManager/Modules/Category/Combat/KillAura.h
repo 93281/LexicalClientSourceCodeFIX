@@ -16,7 +16,7 @@ private:
 	std::vector<Actor*> targetList;
 	int oTick = INT_MAX;
 	bool shouldRot = false;
-	Vec2<float> rotAngle5;
+	Vec2<float> rotationAngle;
 	static bool sortByDist(Actor* a1, Actor* a2);
 	int getBestWeaponSlot(Actor* target);
 	void Attack(Actor* target);

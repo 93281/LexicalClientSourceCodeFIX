@@ -1,8 +1,8 @@
 #include "Fly.h"
 
 Fly::Fly() : Module("Flight", "Fly like superman", Category::MOVEMENT) {
-    registerSetting(new SliderSetting<float>("Horizontal Speed", "Horizontal speed", &hSpeed, 1.f, 0.2f, 15.f));
-    registerSetting(new SliderSetting<float>("Vertical Speed", "Vertical speed", &vSpeed, 0.5f, 0.2f, 3.f));
+    registerSetting(new SliderSetting<float>("Horizontal Speed", "Horizontal speed", &hSpeed, 1.f, 0.2f, 5.f));
+    registerSetting(new SliderSetting<float>("Vertical Speed", "Vertical speed", &vSpeed, 0.5f, 0.2f, 5.f));
     registerSetting(new SliderSetting<float>("Glide Value", "Value that how much u want to go down", &Glide, -0.02f, -0.3f, 0.f));
 }
 

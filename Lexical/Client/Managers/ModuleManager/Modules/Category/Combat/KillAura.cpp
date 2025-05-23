@@ -4,13 +4,13 @@ int seleelc = 0;
 KillAura::KillAura() : Module("KillAura", "Attacks entities around you", Category::COMBAT) {
 	registerSetting(new PageSetting("Page", "Module Page", { "Target", "Attack", "Weapon" }, &seleelc));
 	this->modulePagePtr = &seleelc;
-	registerSetting(new SliderSetting<float>("Range", "Range in which targets will be hit", &range, 5.f, 3.f, 150.f, 0));
-	registerSetting(new SliderSetting<float>("WallRange", "Range in which targets will be hit through walls", &wallRange, 0.f, 0.f, 150.f, 0));
+	registerSetting(new SliderSetting<float>("Range", "Range in which targets will be hit", &range, 5.f, 3.f, 40.f, 0));
+	registerSetting(new SliderSetting<float>("WallRange", "Range in which targets will be hit through walls", &wallRange, 0.f, 0.f, 40.f, 0));
 	registerSetting(new BoolSetting("Mobs", "Attack Mobs", &includeMobs, false, 0));
 
 	registerSetting(new SliderSetting<int>("Interval", "Attack delay", &interval, 1, 0, 20, 1));
 	registerSetting(new SliderSetting<int>("Multiplier", "Number of attacks per tick", &multiplier, 1, 1, 5, 1));
-	registerSetting(new EnumSetting("Rotations", "Rotates to the targets", { "None", "Normal", "Strafe", "Predict" }, &rotMode, 1, 1));
+	registerSetting(new EnumSetting("Rotations", "Rotates to the targets", { "None", "Silent", "Strafe", "Short" }, &rotMode, 1, 1));
 	registerSetting(new EnumSetting("HitType", "Hit mode", { "Single", "Multi" }, &hitType, 0, 1));
 	registerSetting(new SliderSetting<int>("HitChance", "Chance to hit", &hitChance, 100, 0, 100, 1));
 
@@ -92,7 +92,7 @@ void KillAura::onNormalTick(LocalPlayer* localPlayer) {
 
 	Vec3<float> aimPos = targetList[0]->getEyePos();
 	aimPos.y = targetList[0]->aabbShape->aabb.getCenter().y;
-	rotAngle5 = localPlayer->getEyePos().CalcAngle(aimPos);
+	rotationAngle = localPlayer->getEyePos().CalcAngle(aimPos);
 	shouldRot = true;
 
 	if (oTick >= interval) {
@@ -126,18 +126,19 @@ void KillAura::onNormalTick(LocalPlayer* localPlayer) {
 
 void KillAura::onUpdateRotation(LocalPlayer* localPlayer) {
 	if (!shouldRot || rotMode == 0) return;
-
 	ActorRotationComponent* rotation = localPlayer->rotation;
-	ActorHeadRotationComponent* headRot = localPlayer->getActorHeadRotationComponent();
 	MobBodyRotationComponent* bodyRot = localPlayer->getMobBodyRotationComponent();
-
-	if (rotMode == 1 || rotMode == 3) {
-		rotation->presentRot = rotAngle5;
-		headRot->headYaw = rotAngle5.y;
-		bodyRot->bodyYaw = rotAngle5.y;
+	ActorHeadRotationComponent* headRot = localPlayer->getActorHeadRotationComponent();
+	if (rotMode == 3) {
+		Vec3<float> aimPos = targetList[0]->getEyePos();
+		aimPos.y = targetList[0]->aabbShape->aabb.getCenter().y;
+		rotationAngle = localPlayer->getEyePos().CalcAngle(aimPos);
 	}
-	else if (rotMode == 2) {
-		rotation->presentRot = rotAngle5;
+	if (rotMode == 2 || rotMode == 3) {
+		rotation->presentRot.y = rotationAngle.y;
+		rotation->presentRot.x = rotationAngle.x;
+		bodyRot->bodyYaw = rotationAngle.y;
+		headRot->headYaw = rotationAngle.y;
 	}
 }
 
@@ -145,6 +146,6 @@ void KillAura::onSendPacket(Packet* packet) {
 	if (!shouldRot || rotMode == 0 || packet->getId() != PacketID::PlayerAuthInput) return;
 
 	PlayerAuthInputPacket* paip = static_cast<PlayerAuthInputPacket*>(packet);
-	paip->rotation.y = rotAngle5.y;
-	paip->headYaw = rotAngle5.x;
+	paip->rotation.y = rotationAngle.y;
+	paip->headYaw = rotationAngle.x;
 }
